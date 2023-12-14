@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:5.0.5
+    container_name: mongodb
+    networks:
+      - my_network
+    volumes:
+      - mongo-config:/etc/mongo
+      - mongo-data:/data/db
+      - mongo-cluster:/data/configdb
+    ports:
+      - "27017:27017"
+    environment:
+      - LANG=C.UTF-8
+    command: mongod -f /etc/mongo/mongod.conf --auth
+
+  elasticsearch:
+    build:
+      context: .
+      dockerfile: ./elasticsearch/Dockerfile  # 这里应该是你的 Dockerfile 的路径
+    image: my-elasticsearch-image
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms250m -Xmx512m
+    networks:
+      - my_network
+
+  kibana:
+    image: kibana:7.17.3
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - my_network
+
+  vueApp:
+    build:
+      context: .
+      dockerfile: ./raokouling_frontend/Dockerfile  # 这里应该是你的 Dockerfile 的路径
+    image: vuenginxcontainer
+    container_name: vueApp
+    ports:
+      - "80:80"
+    volumes:
+      - /home/roiyin/alldatas/useful_data:/usr/share/nginx/useful_data
+    networks:
+      - my_network
+
+  nodewebserver:
+    build:
+      context: .
+      dockerfile: ./raokouling_backend/Dockerfile  # 这里应该是你的 Dockerfile 的路径
+    image: nodewebcontainer
+    container_name: nodewebserver
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+
+volumes:
+  mongo-config:
+  mongo-data:
+  mongo-cluster:
