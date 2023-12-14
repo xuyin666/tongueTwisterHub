@@ -19,8 +19,8 @@ services:
 
   elasticsearch:
     build:
-      context: .
-      dockerfile: ./elasticsearch/Dockerfile  # 这里应该是你的 Dockerfile 的路径
+      context: ./elasticsearch
+      dockerfile: Dockerfile  # 这里应该是你的 Dockerfile 的路径
     image: my-elasticsearch-image
     container_name: elasticsearch
     ports:
@@ -42,8 +42,8 @@ services:
 
   vueApp:
     build:
-      context: .
-      dockerfile: ./raokouling_frontend/Dockerfile  # 这里应该是你的 Dockerfile 的路径
+      context: ./raokouling_frontend
+      dockerfile: Dockerfile  # 这里应该是你的 Dockerfile 的路径
     image: vuenginxcontainer
     container_name: vueApp
     ports:
@@ -55,8 +55,8 @@ services:
 
   nodewebserver:
     build:
-      context: .
-      dockerfile: ./raokouling_backend/Dockerfile  # 这里应该是你的 Dockerfile 的路径
+      context: ./raokouling_backend
+      dockerfile: Dockerfile  # 这里应该是你的 Dockerfile 的路径
     image: nodewebcontainer
     container_name: nodewebserver
     ports:
