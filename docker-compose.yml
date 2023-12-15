@@ -76,7 +76,6 @@ services:
       test: [ "CMD", "curl", "-s", "http://nodewebserver:3000" ]
       timeout: 30s
       retries: 10
-    command: ["npm start"]
 
   vueApp:
     build:
