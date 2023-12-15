@@ -6,6 +6,6 @@ until mongo --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
     sleep 1
 done
 
-mongoimport --authenticationDatabase=admin --username=root --password=123456  --collection=contact_us --db=tongueTwisterHub --file=contact_us.json
-mongoimport --authenticationDatabase=admin --username=root --password=123456  --collection=language_count --db=tongueTwisterHub --file=language_count.json
-mongoimport --authenticationDatabase=admin --username=root --password=123456  --collection=raokouling_cn --db=tongueTwisterHub --file=raokouling_cn.json
+mongoimport --authenticationDatabase=admin --username=root --password=123456  --collection=contact_us --db=tongueTwisterHub --file=tmp_files/contact_us.json
+mongoimport --authenticationDatabase=admin --username=root --password=123456  --collection=language_count --db=tongueTwisterHub --file=tmp_files/language_count.json
+mongoimport --authenticationDatabase=admin --username=root --password=123456  --collection=raokouling_cn --db=tongueTwisterHub --file=tmp_files/raokouling_cn.json
