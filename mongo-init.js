@@ -2,7 +2,10 @@
 
 // 进入 admin 数据库
 db = db.getSiblingDB('admin');
-// .auth()
+
+db.auth(_getEnv("MONGO_INITDB_ROOT_USERNAME"), _getEnv("MONGO_INITDB_ROOT_PASSWORD"))
+
+
 // 创建管理员用户
 db.createUser({
     user: 'admin',
@@ -11,7 +14,7 @@ db.createUser({
 });
 
 // 验证
-// db.auth('admin','MSM1999msm@');
+db.auth('admin','MSM1999msm@');
 
 // 切换到tongueTwisterHub数据库
 db = db.getSiblingDB('tongueTwisterHub');
@@ -29,7 +32,7 @@ db.createUser(
     }
 );
 
-// db.auth('root', '123456')
+db.auth('root', '123456')
 
-// db.test.save({name:"aaaa"})
+db.test.save({name:"aaaa"})
 db.log.insertOne({"message": "Database created."});
