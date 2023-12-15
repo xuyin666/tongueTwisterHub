@@ -21,6 +21,11 @@ services:
       - MONGO_INITDB_DATABASE=admin
       - LANG=C.UTF-8
     command: mongod -f /etc/mongo/mongod.conf --auth
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   elasticsearch:
     build:
@@ -34,10 +39,12 @@ services:
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms250m -Xmx512m
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://elasticsearch:9200" ]
+      timeout: 30s
+      retries: 10
     networks:
       - my_network
-    depends_on:
-      - mongodb
 
   kibana:
     image: kibana:7.17.3
@@ -47,7 +54,8 @@ services:
     networks:
       - my_network
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
 
   nodewebserver:
     build:
@@ -60,8 +68,15 @@ services:
     networks:
       - my_network
     depends_on:
-      - mongodb
-      - elasticsearch
+      mongodb:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://nodewebserver:3000" ]
+      timeout: 30s
+      retries: 10
+    command: ["npm start"]
 
   vueApp:
     build:
@@ -76,7 +91,8 @@ services:
     networks:
       - my_network
     depends_on:
-      - nodewebserver
+      nodewebserver:
+        condition: service_healthy
 
 networks:
   my_network:
