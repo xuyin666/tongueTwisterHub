@@ -1,10 +1,10 @@
 // mongo-init.js
 
-// 进入 admin 数据库
-db = db.getSiblingDB('admin');
-
+// 先验证
 db.auth(_getEnv("MONGO_INITDB_ROOT_USERNAME"), _getEnv("MONGO_INITDB_ROOT_PASSWORD"))
 
+// 进入 admin 数据库
+db = db.getSiblingDB('admin');
 
 // 创建管理员用户
 db.createUser({
@@ -16,9 +16,8 @@ db.createUser({
 // 验证
 db.auth('admin','MSM1999msm@');
 
-// 切换到tongueTwisterHub数据库
-db = db.getSiblingDB('tongueTwisterHub');
-// 进入要使用的数据库
+
+// 创建角色
 db.createUser(
     {
         user: "root",
@@ -32,7 +31,10 @@ db.createUser(
     }
 );
 
-db.auth('root', '123456')
+db.auth('root','123456');
+// 切换到tongueTwisterHub数据库
+db = db.getSiblingDB('tongueTwisterHub');
+
 
 db.test.save({name:"aaaa"})
 db.log.insertOne({"message": "Database created."});
