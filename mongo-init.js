@@ -1,4 +1,4 @@
-// init-script.js
+// mongo-init.js
 
 // 进入 admin 数据库
 db = db.getSiblingDB('admin');
