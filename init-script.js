@@ -34,3 +34,5 @@ db.auth('root', '123456')
 db = db.getSiblingDB('tongueTwisterHub');
 
 db.test.save({name:"aaaa"})
+
+db.log.insertOne({"message": "Database created."});
