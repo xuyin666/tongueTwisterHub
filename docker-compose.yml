@@ -12,8 +12,8 @@ services:
       - mongo-cluster:/data/configdb
       - ./mongodb_data:/tmp_files
       - ./mongod.conf:/etc/mongo/mongod.conf
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      - ./import-data-mongodb.sh:/docker-entrypoint-initdb.d/import-data-mongodb.sh
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/1-mongo-init.js
+      - ./import-data-mongodb.sh:/docker-entrypoint-initdb.d/2-import-data-mongodb.sh
     restart: always
     ports:
       - "27017:27017"
