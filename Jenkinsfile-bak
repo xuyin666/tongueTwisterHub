@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Repositories') {
+            steps {
+                // 克隆父项目
+                git url: 'https://github.com/xuyin666/tongueTwisterHub.git', branch: 'main'
+                sh 'git clone git@github.com:xuyin666/raokouling_frontend.git'
+                sh 'git clone git@github.com:xuyin666/raokouling_backend.git'
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-token') {
+                        // 这里是 Docker 相关的步骤，比如 docker push
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // 部署应用
+                sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Deliver') {
+            steps {
+                echo 'Deliver....'
+                sh '''
+                echo "doing delivery stuff.."
+                '''
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                // 这里可以添加构建和测试步骤
+                echo 'Building and testing repositories...'
+            }
+        }
+
+        // 其他阶段，如构建 Docker 镜像、部署等
+    }
+
+}
