@@ -60,7 +60,7 @@ services:
         condition: service_healthy
 
   nodewebserver:
-    image: xuyin888/myexpressimage
+    image: xuyin888/myexpressimage:build-4
     container_name: nodewebserver
     env_file:
       - .env
@@ -79,7 +79,7 @@ services:
       retries: 10
 
   vueApp:
-    image: xuyin888/myvuenginximage
+    image: xuyin888/myvuenginximage:build-5
     container_name: vueApp
     ports:
       - "80:80"
