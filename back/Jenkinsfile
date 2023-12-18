@@ -5,9 +5,9 @@ pipeline {
     // 定义环境变量
     environment {
         // Docker Hub 凭据的 ID 
-        DOCKER_HUB_CREDENTIALS_ID = 'docker-hub-credentials' 
+        DOCKER_HUB_CREDENTIALS_ID = 'docker-hub-token' 
         // Docker 镜像的名称，应包含用户名和应用名
-        DOCKER_IMAGE_NAME = 'xuyin888/myvueapp' 
+        DOCKER_IMAGE_NAME = 'xuyin888/myexpressapp' 
         DOCKER_IMAGE_TAG = "build-${env.BUILD_NUMBER}"
     }
     
@@ -19,20 +19,29 @@ pipeline {
         stage('Checkout') {
             // 检出代码阶段
             steps {
-                git url: 'git@github.com:xuyin666/raokouling_frontend.git', branch: 'main'
+                sh 'git clone git@github.com:xuyin666/raokouling_backend.git'
+            }
+        }
+
+        stage('Install dependancy') {
+            steps {
+                script {
+                    // 进入新创建的目录
+                    dir('raokouling_backend') {
+                        // 进入拉取的仓库目录
+                        sh 'node --version'
+                        // 安装 npm 依赖
+                        sh 'npm install'
+                    }
+                }
             }
         }
 
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    // 进入拉取的仓库目录
-                    dir('raokouling_frontend') {
-                        sh 'node --version'
-                        // 安装 npm 依赖
-                        sh 'npm install'
-                        // 运行 npm 构建脚本
-                        sh 'npm run build'
+                   // 进入新创建的目录
+                    dir('raokouling_backend') {
                         // 构建 Docker 镜像
                         docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
                         // 使用凭据登录到 Docker Hub，并推送镜像
@@ -44,15 +53,19 @@ pipeline {
                 }
             }
         }
-
-
     }
 
     post {
+        success {
+            echo 'Build succeeded!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
         always {
             // 构建完成后的操作，无论成功或失败
-            echo 'Cleaning up'
-            // 可以在此处添加清理脚本
+            echo 'Post-build clean up'
+            // cleanWs() // 清理 Jenkins 工作区
         }
     }
 }
