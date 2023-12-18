@@ -60,10 +60,11 @@ services:
         condition: service_healthy
 
   nodewebserver:
-    image: xuyin888/myexpressimage
+    build:
+      context: ./raokouling_backend
+      dockerfile: Dockerfile  # 这里应该是你的 Dockerfile 的路径
+    image: nodewebcontainer
     container_name: nodewebserver
-    env_file:
-      - .env
     ports:
       - "3000:3000"
     networks:
@@ -79,7 +80,10 @@ services:
       retries: 10
 
   vueApp:
-    image: xuyin888/myvuenginximage
+    build:
+      context: ./raokouling_frontend
+      dockerfile: Dockerfile  # 这里应该是你的 Dockerfile 的路径
+    image: vuenginxcontainer
     container_name: vueApp
     ports:
       - "80:80"
