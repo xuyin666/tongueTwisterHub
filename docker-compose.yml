@@ -79,7 +79,7 @@ services:
       retries: 10
 
   vueApp:
-    image: xuyin888/myvuenginximage:build-5
+    image: xuyin888/myvuenginximage:latest
     container_name: vueApp
     ports:
       - "80:80"
