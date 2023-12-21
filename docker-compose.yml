@@ -84,6 +84,7 @@ services:
     ports:
       - "80:80"
     volumes:
+      - /home/roiyin/nginx_cert:/etc/nginx/certificates
       - /home/roiyin/alldatas/useful_data:/usr/share/nginx/useful_data
       - /home/roiyin/projects/tongueTwisterHub/raokouling_frontend/dist:/usr/share/nginx/html
     networks:
