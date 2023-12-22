@@ -80,16 +80,16 @@ services:
 
   vueApp:
     image: xuyin888/myvuenginximage:latest
-    container_name: vueApp
+    container_name: vueapp
     ports:
-      - "80:80"
-      - "443:443"
+      - "8091:8091"
     volumes:
       - /home/roiyin/nginx_cert:/etc/nginx/certificates
       - /home/roiyin/alldatas/useful_data:/usr/share/nginx/useful_data
       - /home/roiyin/projects/tongueTwisterHub/raokouling_frontend/dist:/usr/share/nginx/html
     networks:
       - my_network
+      - shared_network
     depends_on:
       nodewebserver:
         condition: service_healthy
