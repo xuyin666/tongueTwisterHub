@@ -96,6 +96,8 @@ services:
 
 networks:
   my_network:
+  shared_network:
+    external: true
 
 volumes:
   mongo-config:
